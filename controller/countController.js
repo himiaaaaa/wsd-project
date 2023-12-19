@@ -9,13 +9,25 @@ const getCount = async(c, num) => {
     return c.text(`Feedback ${num}: ${count}`)
 }
 
+const getCountById = async(c, num) => {
+    const id = c.req.param("courseId")
+    let count = await countService.getCountById(num, id)
+    return c.text(`Feedback ${num}: ${count}`)
+}
+
 const increaseCount = async(c, num) => {
     await countService.increaseCount(num)
     return c.redirect("/")
+}
+
+const increaseCountById = async(c, num) => {
+    const id = c.req.param("courseId")
+    await countService.increaseCountById(num, id)
+    return c.redirect(`/courses/${id}`)
 }
 
 const listRating = async(c) => {
     return c.html(eta.render("index.eta"))
 }
 
-export { getCount, increaseCount, listRating }
+export { getCount, getCountById, increaseCount, increaseCountById, listRating }

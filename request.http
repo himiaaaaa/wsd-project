@@ -1,3 +1,5 @@
 //curl http://localhost:8000/feedbacks/3
 
-curl -X POST http://localhost:8000/feedbacks/3
+//curl -X POST http://localhost:8000/feedbacks/3
+
+curl -X POST http://localhost:8000/courses/b010f144-120d-4caa-96aa-3d6280c3ab16/feedbacks/2
