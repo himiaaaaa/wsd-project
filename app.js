@@ -1,9 +1,16 @@
 import { Hono } from "https://deno.land/x/hono@v3.7.4/mod.ts";
-import * as countController from "./countController.js"
+import * as countController from "./controller/countController.js"
+import * as courseController from "./controller/courseController.js"
 
 const app = new Hono();
 
 app.get("/", countController.listRating)
+app.post("/courses", courseController.addCourse)
+app.get("/courses", courseController.listCourses)
+
+app.get("/courses/:courseId", courseController.listCourse)
+app.post("/courses/:courseId/delete", courseController.deleteCourse)
+
 app.get("/feedbacks/1", (c) => countController.getCount(c,1));
 app.post("/feedbacks/1", (c) => countController.increaseCount(c,1));
 

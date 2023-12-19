@@ -1,5 +1,6 @@
-import * as countService from "./countService.js";
+import * as countService from "../service/countService.js";
 import { Eta } from "https://deno.land/x/eta@v3.1.0/src/index.ts";
+import * as courseService from "../service/courseService.js";
 
 const eta = new Eta({ views: `${Deno.cwd()}/templates/` })
 
