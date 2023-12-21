@@ -1,8 +1,22 @@
 import * as courseService from "../service/courseService.js";
 import { Eta } from "https://deno.land/x/eta@v3.1.0/src/index.ts";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import {
+    getSignedCookie,
+    setSignedCookie
+} from "https://deno.land/x/hono@v3.7.4/helper.ts";
 
 const eta = new Eta({ views: `${Deno.cwd()}/templates/` })
+
+const sessionCounts = new Map()
+const secret = "secret"
+
+const getAndIncrementCount = (sessionId) => {
+    let count = sessionCounts.get(sessionId) ?? 0
+    count++
+    sessionCounts.set(sessionId, count)
+    return count
+}
 
 const validator = z.object({
     name: z.string().min(4, { message: "The course name should be a string of at least 4 characters." })
@@ -32,8 +46,14 @@ const listCourses = async(c) => {
 
 const listCourse = async(c) => {
     const id = c.req.param("courseId")
+    const sessionId = await getSignedCookie(c, secret, "sessionId") ?? crypto.randomUUID();
+    await setSignedCookie(c, "sessionId", sessionId,  secret, {
+		path: `/courses/${id}`
+	})
+    const count = sessionCounts.get(`${sessionId}/${id}`)
     const data = {
-        course: await courseService.listCourse(id)
+        course: await courseService.listCourse(id),
+        count: count
     }
 
     return c.html(eta.render("course.eta", data))
@@ -47,4 +67,4 @@ const deleteCourse = async(c) => {
     return c.redirect("/courses")
 }
 
-export { addCourse, listCourses, listCourse, deleteCourse }
+export { addCourse, listCourses, listCourse, deleteCourse, sessionCounts }

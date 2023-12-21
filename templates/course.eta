@@ -6,21 +6,25 @@
     <body>
         <h1>Course name: </h1>
         <p><%= it.course.name %></p>
-        <h1>How would you rate this experience?</h1>
-        <form method="POST" action="/courses/<%= it.course.id %>/feedbacks/1">
-            <input type="submit" value="Poor" />
-        </form>
-        <form method="POST" action="/courses/<%= it.course.id %>/feedbacks/2">
-            <input type="submit" value="Fair" />
-        </form>
-        <form method="POST" action="/courses/<%= it.course.id %>/feedbacks/3">
-            <input type="submit" value="Good" />
-        </form>
-        <form method="POST" action="/courses/<%= it.course.id %>/feedbacks/4">
-            <input type="submit" value="Very good" />
-        </form>
-        <form method="POST" action="/courses/<%= it.course.id %>/feedbacks/5">
-            <input type="submit" value="Excellent" />
-        </form>
+        <h1>How would you rate this course?</h1>
+        <% if( it.count >= 1){ %>
+            <p>You have already given feedback for this course. Thank you!</p>
+        <% } else { %>
+            <form method="POST" action="/courses/<%= it.course.id %>/feedbacks/1">
+                <input type="submit" value="Poor" />
+            </form>
+            <form method="POST" action="/courses/<%= it.course.id %>/feedbacks/2">
+                <input type="submit" value="Fair" />
+            </form>
+            <form method="POST" action="/courses/<%= it.course.id %>/feedbacks/3">
+                <input type="submit" value="Good" />
+            </form>
+            <form method="POST" action="/courses/<%= it.course.id %>/feedbacks/4">
+                <input type="submit" value="Very good" />
+            </form>
+            <form method="POST" action="/courses/<%= it.course.id %>/feedbacks/5">
+                <input type="submit" value="Excellent" />
+            </form>
+        <% } %>
     </body>
 </html>
